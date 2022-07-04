@@ -1,0 +1,42 @@
+﻿@model IEnumerable<NovelV1._2.Models.DTO.NoiDungSach>
+
+                @if (@ViewBag.empty == "")
+                {
+                    <div class="isEmpty" style="padding:30%;">
+                    <h2 style="font-size:5rem">Truyện Này Hiện Chưa Có Tập Nào</h2>
+                    </div>
+
+                }
+            else { 
+<div class="modal-Create-dialog">
+    <div class="modal-Create">
+        <div class="modal-container">
+            <header class="modal-header">
+                @foreach (var ele in Model)
+                {
+                    <h2>Tên Truyện: @ele.Sach.Sach_ten</h2>
+                    <br />
+                    <p>Tác Giả: @ele.Sach.Sach_TacGia</p>
+                    <br />
+                    <p>Ngày Sản Xuất: @ele.Sach.Sach_ngaySanXuat.ToShortDateString()</p>
+                    break;
+                }
+            </header>
+            <div class="modal-body" style="text-align:center;">
+                @foreach (var ele in Model)
+                {
+                    <img src="@ele.Sach.Sach_anh" alt="Alternate Text" />
+                    break;
+                }
+                <br />
+                @foreach (var ele in Model)
+                {
+                    <div class="aboutChapter" style="margin:1rem 0;">
+                    <a href="@Url.Action("Edit_noiDung", new {id = ele.Sach_ma,ep = ele.NoiDungSach_Tap} )">Tập : @ele.NoiDungSach_Tap</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+                }

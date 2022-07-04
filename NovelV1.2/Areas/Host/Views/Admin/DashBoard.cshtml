@@ -1,0 +1,116 @@
+﻿@model IEnumerable<NovelV1._2.Models.DTO.ThanhToan>
+@{
+    ViewBag.Title = "DashBoard";
+}
+
+<h2>DashBoard</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>Chọn Năm: </p> <select id="select" class="form-control" style="width:150px">
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+        </select>
+        <p>Chọn Tháng: </p>
+        <select id="selectMonth" class="form-control" style="width:150px">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+        <div id="dvChart">
+            <canvas style="height:300px" id="canvas"></canvas>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/code/chart.min.js"></script>
+    <script>
+        var currentyear = 2019;
+        $.get('/AdminHome/getTotal?year=' + currentyear, function (resp) {
+            RegisterChartProduct(resp)
+        });
+        $('#selectMonth').on('change', function () {
+            let year =$('#select').val()
+            let month = $(this).val();
+            $.get('/Admin/getTotal?year=' + year + '&month=' + month, function (resp) {
+                RegisterChartProduct(resp)
+            });
+        });
+
+        $('#select').on('change', function () {
+            var year = $(this).val();
+            $.get('/Admin/getTotal?year=' + year, function (resp) {
+                RegisterChartProduct(resp)
+            });
+        });
+
+
+
+        function RegisterChartProduct(lstData) {
+            $('#canvas').remove();
+            $('#dvChart').html('<canvas style="height:300px" id="canvas"></canvas>')
+            var lstLable = [];
+            var total = []
+            $.each(lstData, function (index, item) {
+                if (item.Thang != "") {
+                    lstLable.push('Tháng ' + item.Thang)
+                    total.push(item.Tong)
+                }
+                else {
+                    lstLable.push('Ngày ' + item.Ngay)
+                    total.push(item.Tong)
+                }
+            })
+
+            var ctx = document.getElementById("canvas");
+            var barChartData = {
+
+                labels: lstLable,
+                datasets: [
+                    {
+                        label: 'Tổng Tiền',
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1,
+                        data: total,
+
+                    }
+
+                ]
+            }
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    responsive: true,
+                },
+            });
+        }
+    </script>
+}

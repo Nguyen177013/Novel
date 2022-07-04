@@ -1,0 +1,166 @@
+﻿@model NovelV1._2.Models.DTO.Sach
+<link href="~/Content/Css/info-style.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Detail";
+}
+<div id="slider">
+    <div class="header-slider">
+        <h2>Loli Light Novel</h2>
+    </div>
+</div>
+<div id="content">
+    <div class="content-Info content-center">
+        <div class="top-Info">
+            <p class="info-Title">
+                <a href="@Url.Action("Index")" class="home-Title"><i class="fa-solid fa-house"></i></a>
+                <span>/</span>
+                <a href="@Url.Action("Type", "Home", new { id = Model.TheLoai.TheLoai_ten })" class="type-Title">@Html.DisplayFor(model => model.TheLoai.TheLoai_ten)</a>
+
+                <span>/</span>
+                <span class="name-Title">@Html.DisplayFor(model => model.Sach_ten)</span>
+            </p>
+            <div class="row">
+                <div class="left-info">
+                    <img src="@Html.DisplayFor(model => model.Sach_anh)" alt="">
+                </div>
+                <div class="right-info">
+                    <h2>@Html.DisplayFor(model => model.Sach_ten)</h2>
+                    <p class="info-Detail underline-text">
+                        <a href="@Url.Action("Type", "Home", new { id = Model.TheLoai.TheLoai_ten })" class="info-Title "><i class="fa-brands fa-squarespace"></i>@Html.DisplayFor(model => model.TheLoai.TheLoai_ten)</a>
+                        <i class="fa-solid fa-eye move-right"></i>@Model.Sach_LuotDoc
+                    </p>
+                    <p class="info-Detail ">
+                        Tác Giả: <a href="@Url.Action("Author", "Home", new { id = Model.Sach_TacGia })">@Html.DisplayFor(model => model.Sach_TacGia)</a>
+                    </p>
+
+                    @if (Model.Sach_TinhTrang == false)
+                    {
+                        <p class="info-Detail ">
+                            Tình Trạng: <a class="underline-text" href="">Đang Tiến Hành</a>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="info-Detail ">
+                            Tình Trạng: <a class="underline-text" href="">Hoàn Thành</a>
+                        </p>
+                    }
+                    <p class="info-Detail ">
+                        Ngày Sản Xuất: @Html.DisplayFor(Model => Model.Sach_ngaySanXuat)
+                    </p>
+                    <div class="rate">
+                        <input type="radio" id="star5" name="rate" value="5" />
+                        <label for="star5" title="5">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" />
+                        <label for="star4" title="4">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" />
+                        <label for="star3" title="3">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" />
+                        <label for="star2" title="2">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" />
+                        <label for="star1" title="1">1 star</label>
+                        <p class="total">/@ViewBag.totalRater</p>
+                    </div>
+                    <div class="read-Btn">
+                        @if (@ViewBag.buyed != null)
+                        {
+                            if (ViewBag.read != null)
+                            {
+                                <a href="@Url.Action("Read", "Home", new {id = Model.Sach_ma,user =@Session["TaiKhoan_maSS"], ep = 1})" class="read ">Đọc Sách</a>
+                            }
+                            else
+                            {
+                                <a class="read" style="cursor:default">Đang Cập Nhật</a>
+                            }
+                        }
+                        else if (Model.Sach_gia == 0)
+                        {
+                            <a href="@Url.Action("Read", "Home", new {id = Model.Sach_ma,user =@Session["TaiKhoan_maSS"], ep = 1})" class="read ">Đọc Sách</a>
+                        }
+                        else if (Session["TaiKhoan_maSS"] == null)
+                        {
+                            <a href="#" class="read ">@String.Format("{0:0,0 vnđ}", Model.Sach_gia)</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Payment", "MoMo", new {price = Model.Sach_gia,ma =Model.Sach_ma})" class="read ">@String.Format("{0:0,0 vnđ}", Model.Sach_gia)</a>
+                        }
+                        @if (ViewBag.check != null)
+                        {
+                            using (Html.BeginForm("BoYeuThich", "Home", new { sach = Model.Sach_ma, user = Session["TaiKhoan_maSS"] }, FormMethod.Post, new { @class = "inline-block" }))
+                            {
+                                <input type="submit" value="Bỏ Thích" class="add_favorate" />
+                            }
+                        }
+                        else if (Session["TaiKhoan_maSS"] != null)
+                        {
+                            using (Html.BeginForm("SachYeuThich", "Home", new { sach = Model.Sach_ma, user = Session["TaiKhoan_maSS"] }, FormMethod.Post, new { @class = "inline-block" }))
+                            {
+                                <input type="submit" value="Yêu Thích @ViewBag.TotalLike" class="remove_favorate" />
+                            }
+                        }
+                        else
+                        {
+                            <input type="submit" value="Yêu Thích @ViewBag.TotalLike" class="remove_favorate" onclick="openLogin()" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="content-about">
+                <h3>Tóm Tắt</h3>
+                <div class="content-Synopsis">
+                    <div class="main-contain">
+                        @Html.Raw(Model.Sach_TomTat)
+                    </div>
+                    <button class="read-More"><i class="fa-solid fa-caret-down"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            let rating = @ViewBag.rating;
+            let rate = document.getElementById('star' + rating)
+            if (rating != 0) {
+            rate.checked = true
+            }
+            let check = '@Session["TaiKhoan_maSS"]';
+            $('.read-Btn').click(function () {
+                if (($('.read-Btn .read').text() === 'Đọc Sách') || check === "") openLogin();
+            })
+             let rates = document.querySelectorAll('input[name="rate"]');
+            rates.forEach((checked) => {
+                checked.onclick = (e) => {
+                    console.log(typeof parseInt(e.target.value));
+                   if (check === '') {
+                        openLogin();
+                       rate.checked = true;
+                    }
+                   else {
+                       $('input[name = "rate"]').prop('disable', true);
+                       let dataObj = {
+                           "id": @Model.Sach_ma,
+                           "user": check,
+                           "rate": parseInt(e.target.value)
+                       }
+                     $.ajax({
+                        url: '@Url.Action("rating", "Home")',
+                        type: "POST",
+                        data: dataObj,
+                        dataType: "json",
+                        success: function (result) {
+                            alert('thành công');
+                        },
+                         error: function (erro) {
+                             showSuccessToastRating();
+                             setTimeout(function () {
+                                 location.reload();
+                             }, 2000);
+                        }
+                    });
+                }
+            }
+            })
+        })
+    </script>

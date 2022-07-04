@@ -1,0 +1,63 @@
+﻿@model PagedList.IPagedList<NovelV1._2.Models.DTO.Sach>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "listSach";
+    Layout = "~/Areas/Host/Views/Shared/_Layout.cshtml";
+}
+<style>
+    form{
+        display:inline-block;
+    }
+</style>
+<div id="content">
+    <div class="content-admin content-center" style=" padding-top: 5rem;">
+        <div class="table-users">
+            <div class="header">Danh Sách Truyện</div>
+            <table class="table" cellspacing="0">
+                <tr>
+                    <th>Ảnh Truyện</th>
+                    <th width="230">Tên Truyện</th>
+                    <th>Tác Giả</th>
+                    <th>Ngày Sản Xuất</th>
+                    <th>Phục Lục</th>
+                </tr>
+                @foreach (var ele in Model)
+                {
+                    <tr>
+                        <td><img src="@ele.Sach_anh" alt="" /></td>
+                        <td>@ele.Sach_ten</td>
+                        <td>@ele.Sach_TacGia</td>
+                        <td> @ele.Sach_ngaySanXuat.ToShortDateString()</td>
+                        <td>
+                            <div class="event-button">
+                                <span class="addBtn btn"><a href=" @Url.Action("Create_NoiDung", new { id = ele.Sach_ma })">Thêm Tập</a></span>
+                                <span class="editBtn btn"><a href=" @Url.Action( "Edit_Sach", new { id = ele.Sach_ma })">Sửa</a></span>
+                                @using (Html.BeginForm("Delete_Sach", "Admin", new { id = ele.Sach_ma }))
+                                {
+                                <input type="submit" value="Xóa Sách" class="removeBtn btn"/>
+                                }
+                                <span class="aboutBtn btn"><a href="@Url.Action("Detail_Sach", new { id = ele.Sach_ma })">Các Tập</a></span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div style="text-align:center; margin-top:1.5rem">
+            <div style="font-size:1.8rem; margin-bottom:0.8rem;">
+                Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount
+            </div>
+            <div class="MenuTrang">
+                @Html.PagedListPager(Model, page => Url.Action("listSach", new { page = page, }))
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .MenuTrang li {
+        display: inline;
+        margin: 0 1rem;
+        font-size: 1.7rem;
+    }
+</style>
+

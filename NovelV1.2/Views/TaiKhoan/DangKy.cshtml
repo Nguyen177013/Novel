@@ -1,0 +1,83 @@
+﻿@model NovelV1._2.Models.DTO.TaiKhoan
+@{
+    ViewBag.Title = "DangKy";
+}
+<style>
+    #main-header,
+    #main-footer,
+    #myBtn {
+        display: none;
+    }
+
+    input {
+        padding: 1.4rem;
+        border: 1.5px solid #afafaf;
+        border-radius: 0.4rem;
+    }
+    .Register {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-image: linear-gradient(120deg, #de98e9 25%, #12d8f6 75%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: modalFadeIn ease 0.8s;
+    }
+</style>
+<div class="modal-Login-dialog Register">
+    <div class="modal-Login">
+        <div class="modal-container">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <header class="modal-header">
+                    Đăng Ký
+                </header>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10" style="text-align:center;color:red;font-size:1.2rem;font-weight:bold;">
+                            <label>@ViewBag.Notification</label>
+                        </div>
+                    </div>
+                    <div class="container-login">
+                        <div class="input-container">
+                            @Html.EditorFor(model => model.TaiKhoan_tenDN, new { htmlAttributes = new { @placeholder = "Tài Khoản" } })
+                            @Html.ValidationMessageFor(model => model.TaiKhoan_tenDN, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-container">
+                            @Html.EditorFor(model => model.TaiKhoan_hoTen, new { htmlAttributes = new { @placeholder = "Tên Đăng Nhập" } })
+                            @Html.ValidationMessageFor(model => model.TaiKhoan_hoTen, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-container">
+                            @Html.EditorFor(model => model.TaiKhoan_email, new { htmlAttributes = new { @placeholder = "Email" } })
+                            @Html.ValidationMessageFor(model => model.TaiKhoan_email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-container">
+                            @Html.EditorFor(model => model.TaiKhoan_sdt, new { htmlAttributes = new { @placeholder = "Số Điện Thoại" } })
+                            @Html.ValidationMessageFor(model => model.TaiKhoan_sdt, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-container">
+                            @Html.EditorFor(model => model.TaiKhoan_matKhau, new { htmlAttributes = new { @placeholder = "Mật Khẩu" } })
+                            @Html.ValidationMessageFor(model => model.TaiKhoan_matKhau, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="input-container">
+                            @Html.EditorFor(model => model.TaiKhoan_MatKhauXacNhan, new { htmlAttributes = new { @placeholder = "Mật Khẩu Xác Nhận" } })
+                            @Html.ValidationMessageFor(model => model.TaiKhoan_MatKhauXacNhan, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="container-login-btn">
+                            <button class="btn-submit">
+                                Đăng Ký
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

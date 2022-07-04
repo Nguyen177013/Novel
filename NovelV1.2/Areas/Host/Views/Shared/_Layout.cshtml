@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <link href="~/Content/fontawesome-free-6.0.0-web/fontawesome-free-6.0.0-web/css/all.css" rel="stylesheet" />
+    <script src="~/Content/code/jquery-3.6.0.js"></script>
+    <link href="~/Content/Css/admin.css" rel="stylesheet" />
+    <script src="~/Areas/Host/js/plugins/ckeditor/ckeditor.js"></script>
+    <link href="~/Content/Css/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="slide-bar">
+        <div class="slide-header">
+            <h1 class="cyan">Loli</h1>
+            <h1 class="white">Novel</h1>
+        </div>
+        <div class="slide-content">
+            <ul class="nav-bar">
+                <li><a href="@Url.Action("DashBoard","Admin")">DashBoard</a></li>
+                <li>
+                    <a href="">Thể Loại <i class="fa-solid fa-plus"></i></a>
+                    <ul class="subnav">
+                        <li><a href="@Url.Action("Create_TheLoai","Admin")">Thêm Thể Loại</a></li>
+                        <li><a href="@Url.Action("listTheLoai","Admin")">Danh Sách Thể Loại</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">Truyện <i class="fa-solid fa-plus"></i></a>
+                    <ul class="subnav">
+                        <li><a href="@Url.Action("Create_Sach","Admin")">Thêm Truyện</a></li>
+                        <li><a href="@Url.Action("listSach","Admin")">Danh Sách Truyện</a></li>
+                    </ul>
+                </li>
+                <li><a href="">Thông Tin Khác</a></li>
+            </ul>
+            <div class="slider_footer">
+                <div class="line-contact">
+                    <span class="contact-footer">
+                        Liên Hệ Qua
+                    </span>
+                    <div class="contact-icon">
+                        <a href=""><i class="fa-brands fa-discord"></i></a>
+                        <a href=""><i class="fa-brands fa-facebook-square"></i></a>
+                        <a href=""><i class="fa-brands fa-instagram-square"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" style="margin-left:30rem">
+        @RenderBody()
+    </div>
+    <script src="~/Areas/Host/js/plugins/ckeditor/ckeditor.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @RenderSection("upload", required: false)
+    @RenderSection("jsEditor", required: false);
+</body>
+</html>

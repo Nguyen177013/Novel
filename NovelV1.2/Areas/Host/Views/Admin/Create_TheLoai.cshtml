@@ -1,0 +1,35 @@
+﻿@model NovelV1._2.Models.DTO.TheLoai
+@{
+    ViewBag.Title = "Create_TheLoai";
+    Layout = "~/Areas/Host/Views/Shared/_Layout.cshtml";
+}
+
+<div class="modal-Create-dialog">
+    <div class="modal-Create">
+        <div class="right">
+        </div>
+        <div class="modal-container">
+            <header class="modal-header">
+                Thêm Thể Loại
+            </header>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+                    <div class="input-container">
+                        <label class="control-label" for="">Tên Thể Loại</label>
+                        @Html.EditorFor(model => model.TheLoai_ten, new { htmlAttributes = new { @class = "modal-input" , @autocomplete = "off"} })
+                        @Html.ValidationMessageFor(model => model.TheLoai_ten, "")
+                    </div>
+                    <div class="container-login-btn">
+                        <button class="btn-submit">
+                            Thêm Thể Loại
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
